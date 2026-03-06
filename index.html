@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JIRO BOOSTING VALORANT</title>
     
-    <!-- Favicon (Icon trên tab trình duyệt) -->
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ff4655'/><circle cx='50' cy='50' r='25' fill='none' stroke='white' stroke-width='8'/><line x1='50' y1='15' x2='50' y2='85' stroke='white' stroke-width='8'/><line x1='15' y1='50' x2='85' y2='50' stroke='white' stroke-width='8'/></svg>">
 
     <!-- Tailwind CSS CDN -->
@@ -125,7 +125,7 @@
         .rank-Platinum { color: #3e8f98; font-weight: 700; }
         .rank-Diamond { color: #d946ef; font-weight: 700; }
         .rank-Ascendant { color: #6aeeb5; font-weight: 700; }
-        .rank-Immortal { color: #ff4655; font-weight: 700; }
+        .rank-Immortal { color: #ff4655; font-weight: 700; text-shadow: 0 0 10px rgba(255, 70, 85, 0.3); }
 
         .deco-sq {
             width: 6px; height: 6px; background: white; opacity: 0.5;
@@ -291,7 +291,8 @@
         const pricesPerDivision = {
             "Iron": 25000, "Bronze": 30000, "Silver": 40000, "Gold": 55000,
             "Platinum": 80000, "Diamond": 130000, "Ascendant": 180000,
-            "Immortal 1": 260000, "Immortal 2": 560000, "Immortal 3": 1400000 
+            // Xóa giá trị cố định của Immortal vì sẽ hiển thị Inbox
+            "Immortal 1": 0, "Immortal 2": 0, "Immortal 3": 0 
         };
 
         const DERANK_PRICE_PER_DIVISION = 25000;
@@ -344,6 +345,7 @@
             let totalPrice = 0;
             let displayOperation = "";
             let finalPrice = 0;
+            let isImmortalRank = false;
 
             if (operation === 'rank' || operation === 'derank') {
                 const currentRank = document.getElementById('currentRank').value;
@@ -358,6 +360,11 @@
                 }
 
                 displayOperation = `<span class="${getRankColorClass(currentRank)}">${currentRank}</span> <i class="fa-solid fa-angles-right mx-4 text-gray-500"></i> <span class="${getRankColorClass(desiredRank)}">${desiredRank}</span>`;
+
+                // Kiểm tra nếu rank đích là Immortal
+                if (desiredRank.includes("Immortal")) {
+                    isImmortalRank = true;
+                }
 
                 if (operation === 'rank') {
                     if (diff < 0) {
@@ -406,7 +413,25 @@
                 }
             } else { status.innerHTML = ''; }
 
-            if (totalPrice > 0) {
+            if (totalPrice > 0 || isImmortalRank) {
+                let priceDisplay = "";
+                
+                if (isImmortalRank && operation === 'rank') {
+                    priceDisplay = `
+                        <p class="text-[#ff4655] uppercase font-bold text-sm tracking-widest mb-1">CẦN THỎA THUẬN RR</p>
+                        <div class="text-3xl md:text-4xl font-oswald font-bold text-white leading-none mt-2">
+                            INBOX ĐỂ BIẾT CHI TIẾT
+                        </div>
+                    `;
+                } else {
+                    priceDisplay = `
+                        <p class="text-gray-500 uppercase font-bold text-sm tracking-widest mb-1">Tổng chi phí dự kiến</p>
+                        <div class="text-6xl font-oswald font-bold text-white leading-none">
+                            ${formatCurrency(finalPrice)}<span class="text-2xl text-[#ff4655] align-top ml-1">đ</span>
+                        </div>
+                    `;
+                }
+
                 resultDiv.innerHTML = `
                     <div class="result-box-container p-8">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
@@ -414,22 +439,19 @@
                                 ${displayOperation}
                             </div>
                             <div class="text-center md:text-right">
-                                <p class="text-gray-500 uppercase font-bold text-sm tracking-widest mb-1">Tổng chi phí dự kiến</p>
-                                <div class="text-6xl font-oswald font-bold text-white leading-none">
-                                    ${formatCurrency(finalPrice)}<span class="text-2xl text-[#ff4655] align-top ml-1">đ</span>
-                                </div>
+                                ${priceDisplay}
                             </div>
                         </div>
 
-                        <!-- Nút Thuê Ngay mới -->
+                        <!-- Nút Thuê Ngay -->
                         <a href="https://www.facebook.com/jirovlr" target="_blank" 
                            class="block w-full py-4 bg-[#ff4655] hover:bg-[#ff5d6a] text-white text-center font-bold text-2xl uppercase tracking-widest transition-all transform hover:scale-[1.01] active:scale-95 relative overflow-hidden group">
                             <span class="relative z-10 flex items-center justify-center gap-3">
-                                THUÊ NGAY 
+                                 THUÊ NGAY 
                             </span>
                             <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
                         </a>
-                        <p class="text-center text-gray-500 text-xs mt-3 uppercase tracking-widest opacity-50 italic">* Nhấn thuê ngay để có thể trao đổi trực tiếp với admin</p>
+                        <p class="text-center text-gray-500 text-xs mt-3 uppercase tracking-widest opacity-50 italic">* Nhấn thuê ngay để trao đổi trực tiếp qua Facebook</p>
                     </div>
                 `;
             } else {
