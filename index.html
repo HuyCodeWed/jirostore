@@ -6,7 +6,7 @@
     <title>JIRO BOOSTING VALORANT</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Chakra Petch (Gaming/Tech) & Oswald (Condensed) - Cả 2 đều hỗ trợ Tiếng Việt -->
+    <!-- Google Fonts: Chakra Petch & Oswald -->
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,11 +20,9 @@
         }
 
         body {
-            /* Chakra Petch: Font vuông, đậm chất Sci-fi/Gaming và hỗ trợ Tiếng Việt tốt */
             font-family: 'Chakra Petch', sans-serif; 
             background-color: var(--val-dark);
             color: var(--val-gray);
-            /* Grid Background */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -35,27 +33,17 @@
         
         .font-oswald { font-family: 'Oswald', sans-serif; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--val-dark); }
         ::-webkit-scrollbar-thumb { background: var(--val-red); }
 
-        /* Valorant Card Style */
         .val-card {
             background-color: rgba(15, 25, 35, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            /* Cắt góc đặc trưng */
-            clip-path: polygon(
-                0 0, 
-                100% 0, 
-                100% calc(100% - 20px), 
-                calc(100% - 20px) 100%, 
-                0 100%
-            );
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
         
-        /* Service Tabs - Hard edges */
         .service-radio { display: none; }
         .service-label {
             display: flex;
@@ -71,27 +59,25 @@
             height: 100%;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 600; /* Đậm hơn chút cho gaming */
+            font-weight: 600;
         }
         .service-label:hover {
             background: rgba(255, 255, 255, 0.1);
             border-color: white;
         }
-        /* Active State - Solid Red Bottom Border */
         .service-radio:checked + .service-label {
             background: rgba(255, 70, 85, 0.1);
             border: 1px solid var(--val-red);
             box-shadow: inset 0 0 15px rgba(255, 70, 85, 0.2);
         }
         
-        /* Input Styling - Sharp & Technical */
         .gaming-input {
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
             transition: all 0.2s;
-            border-radius: 0; /* Sharp corners */
-            font-family: 'Chakra Petch', sans-serif; /* Dùng font gaming cho input luôn */
+            border-radius: 0;
+            font-family: 'Chakra Petch', sans-serif;
             letter-spacing: 0.5px;
         }
         .gaming-input:focus {
@@ -100,21 +86,9 @@
             outline: none;
             box-shadow: 0 0 0 1px var(--val-red);
         }
-        select option {
-            background-color: #1c252e;
-            color: white;
-            font-family: sans-serif;
-        }
 
-        /* Checkbox Styling */
-        .custom-checkbox {
-            position: relative;
-            overflow: hidden;
-        }
-        /* Góc chéo nhỏ cho checkbox container */
-        .tech-border {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-        }
+        .custom-checkbox { position: relative; overflow: hidden; }
+        .tech-border { clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px)); }
 
         .custom-checkbox input:checked + div {
             border-color: var(--val-red);
@@ -125,11 +99,6 @@
             border-color: var(--val-red);
         }
 
-        /* Result Box - Cyberpunk/Tech feel */
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
         .result-box-container {
             border: 1px solid var(--val-red);
             background: rgba(20, 20, 20, 0.9);
@@ -145,7 +114,6 @@
             pointer-events: none;
         }
 
-        /* Rank Colors Text */
         .rank-Iron { color: #a19d94; font-weight: 700; }
         .rank-Bronze { color: #cd7f32; font-weight: 700; }
         .rank-Silver { color: #e3e3e3; font-weight: 700; }
@@ -155,7 +123,6 @@
         .rank-Ascendant { color: #6aeeb5; font-weight: 700; }
         .rank-Immortal { color: #ff4655; font-weight: 700; }
 
-        /* Small decorative squares */
         .deco-sq {
             width: 6px; height: 6px; background: white; opacity: 0.5;
             position: absolute;
@@ -164,28 +131,23 @@
 </head>
 <body class="flex items-center justify-center p-4 py-12">
 
-    <!-- Background Elements -->
     <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
         <div class="absolute top-10 left-10 w-20 h-1 bg-white opacity-10"></div>
         <div class="absolute bottom-10 right-10 w-20 h-1 bg-white opacity-10"></div>
-        <div class="absolute top-1/2 left-5 w-1 h-20 bg-red-500 opacity-20"></div>
     </div>
 
     <div class="val-card max-w-4xl w-full relative z-10 shadow-2xl shadow-black/80 mt-10">
         
-        <!-- Header Section -->
+        <!-- Header -->
         <div class="p-8 pb-4 text-center border-b border-white/10 relative">
             <h1 class="text-6xl md:text-7xl font-oswald font-bold text-white mb-0 uppercase italic tracking-tighter leading-none relative inline-block">
                 JIRO <span class="text-[#ff4655]">BOOSTING</span>
             </h1>
-            
             <div class="flex items-center justify-center gap-4 mt-2">
                 <div class="h-[1px] w-12 bg-[#ff4655]"></div>
                 <p class="text-lg text-gray-400 tracking-[0.2em] font-medium uppercase">Dịch Vụ Cày Thuê Valorant</p>
                 <div class="h-[1px] w-12 bg-[#ff4655]"></div>
             </div>
-
-            <!-- Deco corners for header -->
             <div class="deco-sq top-2 left-2"></div>
             <div class="deco-sq top-2 right-2"></div>
         </div>
@@ -193,9 +155,8 @@
         <!-- Main Content -->
         <div class="p-6 md:p-10">
             
-            <!-- Service Type Selection - Changed to 3 columns -->
+            <!-- Service Selection -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-8">
-                <!-- Rank -->
                 <div class="h-16">
                     <input type="radio" id="boostRank" name="operationType" value="rank" checked class="service-radio" onchange="toggleOperationFields()">
                     <label for="boostRank" class="service-label hover:skew-x-[-5deg]">
@@ -203,7 +164,6 @@
                         <span class="font-bold text-lg">Cày Rank</span>
                     </label>
                 </div>
-                <!-- Level -->
                 <div class="h-16">
                     <input type="radio" id="boostLevel" name="operationType" value="level" class="service-radio" onchange="toggleOperationFields()">
                     <label for="boostLevel" class="service-label hover:skew-x-[-5deg]">
@@ -211,7 +171,6 @@
                         <span class="font-bold text-lg">Cày Level</span>
                     </label>
                 </div>
-                <!-- Derank -->
                 <div class="h-16">
                     <input type="radio" id="derank" name="operationType" value="derank" class="service-radio" onchange="toggleOperationFields()">
                     <label for="derank" class="service-label hover:skew-x-[-5deg]">
@@ -221,34 +180,30 @@
                 </div>
             </div>
 
-            <!-- Content Container -->
+            <!-- Fields Container -->
             <div class="relative">
                 <!-- Rank Fields -->
                 <div id="rankFields" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="group">
-                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide flex items-center group-hover:text-white transition-colors">
+                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide flex items-center group-hover:text-white">
                                 <span class="w-2 h-2 bg-[#ff4655] mr-2 inline-block"></span>
                                 Rank Hiện Tại
                             </label>
                             <div class="relative">
-                                <select id="currentRank" class="gaming-input w-full p-3 pl-4 text-xl cursor-pointer uppercase appearance-none font-bold">
-                                    <!-- JS Populated -->
-                                </select>
+                                <select id="currentRank" class="gaming-input w-full p-3 pl-4 text-xl cursor-pointer uppercase appearance-none font-bold"></select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
                                     <i class="fa-solid fa-caret-down"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="group">
-                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide flex items-center group-hover:text-white transition-colors">
+                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide flex items-center group-hover:text-white">
                                 <span class="w-2 h-2 bg-[#ff4655] mr-2 inline-block"></span>
                                 Rank Mong Muốn
                             </label>
                             <div class="relative">
-                                <select id="desiredRank" class="gaming-input w-full p-3 pl-4 text-xl cursor-pointer uppercase appearance-none font-bold">
-                                    <!-- JS Populated -->
-                                </select>
+                                <select id="desiredRank" class="gaming-input w-full p-3 pl-4 text-xl cursor-pointer uppercase appearance-none font-bold"></select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-white">
                                     <i class="fa-solid fa-caret-down"></i>
                                 </div>
@@ -261,21 +216,18 @@
                 <div id="levelFields" class="hidden space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide hover:text-white transition-colors">Level Hiện Tại</label>
+                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide">Level Hiện Tại</label>
                             <input type="number" id="currentLevel" min="1" value="1" class="gaming-input w-full p-3 text-center font-bold text-2xl">
                         </div>
                         <div>
-                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide hover:text-white transition-colors">Level Mong Muốn</label>
+                            <label class="block text-gray-400 text-xl font-bold mb-2 uppercase tracking-wide">Level Mong Muốn</label>
                             <input type="number" id="desiredLevel" min="1" value="1" class="gaming-input w-full p-3 text-center font-bold text-2xl">
                         </div>
                     </div>
                 </div>
 
-                <!-- Duo Fields Removed -->
-
-                <!-- Surcharge Checkboxes (Tech Style) -->
+                <!-- Surcharges -->
                 <div id="surchargeOptions" class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Option 1 -->
                     <label class="custom-checkbox cursor-pointer group h-full">
                         <input type="checkbox" id="hellElo" class="hidden" onchange="calculatePrice()">
                         <div class="tech-border border border-white/10 p-4 bg-white/5 transition-all group-hover:bg-white/10 h-full flex items-center justify-between">
@@ -283,13 +235,11 @@
                                 <div class="check-icon w-5 h-5 border border-gray-500 flex items-center justify-center bg-black/50 transition-colors">
                                     <i class="fa-solid fa-check text-xs text-black"></i>
                                 </div>
-                                <span class="text-xl font-bold text-gray-300 group-hover:text-white uppercase">Hell Elo</span>
+                                <span class="text-xl font-bold text-gray-300 uppercase">Hell Elo</span>
                             </div>
-                            <span class="text-[#ff4655] font-bold text-lg bg-[#ff4655]/10 px-2">+10%</span>
+                            <span class="text-[#ff4655] font-bold text-lg">+10%</span>
                         </div>
                     </label>
-                    
-                    <!-- Option 2 -->
                     <label class="custom-checkbox cursor-pointer group h-full">
                         <input type="checkbox" id="fastBoost" class="hidden" onchange="calculatePrice()">
                         <div class="tech-border border border-white/10 p-4 bg-white/5 transition-all group-hover:bg-white/10 h-full flex items-center justify-between">
@@ -297,13 +247,11 @@
                                 <div class="check-icon w-5 h-5 border border-gray-500 flex items-center justify-center bg-black/50 transition-colors">
                                     <i class="fa-solid fa-check text-xs text-black"></i>
                                 </div>
-                                <span class="text-xl font-bold text-gray-300 group-hover:text-white uppercase">Cày Nhanh</span>
+                                <span class="text-xl font-bold text-gray-300 uppercase">Cày Nhanh</span>
                             </div>
-                            <span class="text-[#ff4655] font-bold text-lg bg-[#ff4655]/10 px-2">+20%</span>
+                            <span class="text-[#ff4655] font-bold text-lg">+20%</span>
                         </div>
                     </label>
-                    
-                    <!-- Option 3 -->
                     <label class="custom-checkbox cursor-pointer group h-full">
                         <input type="checkbox" id="specificAgent" class="hidden" onchange="calculatePrice()">
                         <div class="tech-border border border-white/10 p-4 bg-white/5 transition-all group-hover:bg-white/10 h-full flex items-center justify-between">
@@ -311,40 +259,31 @@
                                 <div class="check-icon w-5 h-5 border border-gray-500 flex items-center justify-center bg-black/50 transition-colors">
                                     <i class="fa-solid fa-check text-xs text-black"></i>
                                 </div>
-                                <span class="text-xl font-bold text-gray-300 group-hover:text-white uppercase">Pick Agent</span>
+                                <span class="text-xl font-bold text-gray-300 uppercase">Pick Agent</span>
                             </div>
-                            <span class="text-[#ff4655] font-bold text-lg bg-[#ff4655]/10 px-2">+10%</span>
+                            <span class="text-[#ff4655] font-bold text-lg">+10%</span>
                         </div>
                     </label>
                 </div>
 
                 <!-- Discount Code -->
                 <div id="discountCodeContainer" class="mt-8 pt-6 border-t border-white/10">
-                    <label class="block text-gray-400 text-lg font-bold mb-2 uppercase tracking-wide">
-                        <i class="fa-solid fa-tag mr-1 text-[#ff4655]"></i> Mã Giảm Giá
-                    </label>
+                    <label class="block text-gray-400 text-lg font-bold mb-2 uppercase tracking-wide">Mã Giảm Giá</label>
                     <div class="relative max-w-md">
-                        <input type="text" id="discountCode" placeholder="NHẬP MÃ GIẢM GIÁ..." 
-                            class="gaming-input w-full p-3 uppercase tracking-widest font-bold text-lg"
-                            oninput="this.value = this.value.toUpperCase(); calculatePrice();">
+                        <input type="text" id="discountCode" placeholder="NHẬP MÃ GIẢM GIÁ..." class="gaming-input w-full p-3 uppercase tracking-widest font-bold text-lg" oninput="this.value = this.value.toUpperCase(); calculatePrice();">
                         <div class="absolute right-4 top-4 text-lg font-bold" id="discountCodeStatus"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Result Area -->
-            <div id="result" class="mt-10 min-h-[140px]">
-                <!-- Results will be injected here -->
-            </div>
+            <div id="result" class="mt-10 min-h-[140px]"></div>
 
         </div>
-        
-        <!-- Bottom Deco Line -->
         <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#ff4655] to-transparent opacity-50"></div>
     </div>
 
     <script>
-        // Data & Logic
         const pricesPerDivision = {
             "Iron": 25000, "Bronze": 30000, "Silver": 40000, "Gold": 55000,
             "Platinum": 80000, "Diamond": 130000, "Ascendant": 180000,
@@ -354,66 +293,39 @@
         const DERANK_PRICE_PER_DIVISION = 25000;
         const BASE_LEVEL_1_TO_20_COST = 150000;
         const BASE_LEVEL_RANGE = 19;
-
         const rankOrder = [
             "Iron 1", "Iron 2", "Iron 3", "Bronze 1", "Bronze 2", "Bronze 3",
             "Silver 1", "Silver 2", "Silver 3", "Gold 1", "Gold 2", "Gold 3",
             "Platinum 1", "Platinum 2", "Platinum 3", "Diamond 1", "Diamond 2", "Diamond 3",
             "Ascendant 1", "Ascendant 2", "Ascendant 3", "Immortal 1", "Immortal 2", "Immortal 3"
         ];
-        
         const discountCodes = { "GIAM5": 0.05, "GIAM10": 0.10, "GIAM15": 0.15 };
 
         function getRankBaseName(fullRank) { return fullRank.split(' ')[0]; }
         function formatCurrency(amount) { return new Intl.NumberFormat('vi-VN', { style: 'decimal' }).format(Math.round(amount)); }
-
-        function getRankColorClass(rankName) {
-            const base = getRankBaseName(rankName);
-            return `rank-${base}`;
-        }
+        function getRankColorClass(rankName) { return `rank-${getRankBaseName(rankName)}`; }
 
         function populateRankDropdowns() {
             const selects = [document.getElementById('currentRank'), document.getElementById('desiredRank')];
-            selects.forEach(select => select.innerHTML = ''); 
-
-            rankOrder.forEach(rank => {
-                selects.forEach(select => {
+            selects.forEach(select => {
+                select.innerHTML = '';
+                rankOrder.forEach(rank => {
                     const option = document.createElement('option');
                     option.value = rank;
                     option.textContent = rank;
                     select.appendChild(option);
                 });
             });
-
             selects[0].value = 'Platinum 3';
             selects[1].value = 'Diamond 3';
         }
 
         function toggleOperationFields() {
             const operation = document.querySelector('input[name="operationType"]:checked').value;
-            
             document.getElementById('rankFields').classList.toggle('hidden', operation !== 'rank' && operation !== 'derank');
             document.getElementById('levelFields').classList.toggle('hidden', operation !== 'level');
-            
-            const discountContainer = document.getElementById('discountCodeContainer');
-            if (operation === 'derank') {
-                discountContainer.classList.add('hidden');
-                document.getElementById('discountCode').value = '';
-                document.getElementById('discountCodeStatus').textContent = '';
-            } else {
-                discountContainer.classList.remove('hidden');
-            }
-
-            const surchargeOptions = document.getElementById('surchargeOptions');
-            if (operation !== 'rank') {
-                surchargeOptions.classList.add('hidden');
-                document.getElementById('hellElo').checked = false;
-                document.getElementById('fastBoost').checked = false;
-                document.getElementById('specificAgent').checked = false;
-            } else {
-                surchargeOptions.classList.remove('hidden');
-            }
-            
+            document.getElementById('discountCodeContainer').classList.toggle('hidden', operation === 'derank');
+            document.getElementById('surchargeOptions').classList.toggle('hidden', operation !== 'rank');
             calculatePrice();
         }
 
@@ -423,178 +335,101 @@
             const isFastBoost = document.getElementById('fastBoost').checked;
             const isSpecificAgent = document.getElementById('specificAgent').checked;
             const discountCodeInput = document.getElementById('discountCode').value.toUpperCase();
-            const discountCodeStatus = document.getElementById('discountCodeStatus');
             const resultDiv = document.getElementById('result');
             
-            resultDiv.innerHTML = '';
-            discountCodeStatus.textContent = ''; 
-
             let totalPrice = 0;
-            let operationType = "";
-            let discountRate = 0;
-            let discountMessageText = "";
+            let displayOperation = "";
+            let finalPrice = 0;
 
             if (operation === 'rank' || operation === 'derank') {
                 const currentRank = document.getElementById('currentRank').value;
                 const desiredRank = document.getElementById('desiredRank').value;
-                const currentRankIndex = rankOrder.indexOf(currentRank);
-                const desiredRankIndex = rankOrder.indexOf(desiredRank);
-                const rankDifference = desiredRankIndex - currentRankIndex;
+                const cIdx = rankOrder.indexOf(currentRank);
+                const dIdx = rankOrder.indexOf(desiredRank);
+                const diff = dIdx - cIdx;
 
-                const cRankClass = getRankColorClass(currentRank);
-                const dRankClass = getRankColorClass(desiredRank);
-
-                if (operation === 'rank') {
-                    if (rankDifference < 0) {
-                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-[#ff4655] bg-red-900/20 text-white font-bold tracking-wide"><i class="fa-solid fa-triangle-exclamation mr-2 text-[#ff4655]"></i> Vui lòng chọn Derank nếu muốn hạ bậc.</div>`;
-                        return;
-                    }
-                    if (rankDifference === 0) {
-                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-[#ff4655] bg-red-900/20 text-white font-bold tracking-wide"><i class="fa-solid fa-triangle-exclamation mr-2 text-[#ff4655]"></i> Rank mong muốn phải khác Rank hiện tại.</div>`;
-                        return;
-                    }
-                    // Mũi tên to hơn (text-2xl), căn giữa (align-middle) và khoảng cách rộng hơn (mx-4)
-                    operationType = `<span class="${cRankClass}">${currentRank}</span> <i class="fa-solid fa-angles-right text-gray-500 mx-4 text-2xl align-middle"></i> <span class="${dRankClass}">${desiredRank}</span>`;
-                    
-                    for (let i = currentRankIndex; i < desiredRankIndex; i++) {
-                        const destinationRankFull = rankOrder[i + 1];
-                        const destinationRankBase = getRankBaseName(destinationRankFull);
-                        totalPrice += (pricesPerDivision[destinationRankFull] !== undefined) 
-                                      ? pricesPerDivision[destinationRankFull] 
-                                      : pricesPerDivision[destinationRankBase];
-                    }
-                } else { // derank
-                    if (rankDifference > 0) {
-                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-[#ff4655] bg-red-900/20 text-white font-bold tracking-wide"><i class="fa-solid fa-triangle-exclamation mr-2 text-[#ff4655]"></i> Vui lòng chọn Cày Rank nếu muốn lên bậc.</div>`;
-                        return;
-                    }
-                    if (rankDifference === 0) {
-                         resultDiv.innerHTML = `<div class="p-4 border-l-4 border-[#ff4655] bg-red-900/20 text-white font-bold tracking-wide"><i class="fa-solid fa-triangle-exclamation mr-2 text-[#ff4655]"></i> Rank mong muốn phải khác Rank hiện tại.</div>`;
-                         return;
-                    }
-                    // Áp dụng tương tự cho phần Derank
-                    operationType = `<span class="${cRankClass}">${currentRank}</span> <i class="fa-solid fa-angles-right text-gray-500 mx-4 text-2xl align-middle"></i> <span class="${dRankClass}">${desiredRank}</span>`;
-                    totalPrice = Math.abs(rankDifference) * DERANK_PRICE_PER_DIVISION;
-                }
-
-            } else if (operation === 'level') {
-                const cLvl = parseInt(document.getElementById('currentLevel').value);
-                const dLvl = parseInt(document.getElementById('desiredLevel').value);
-                if (isNaN(cLvl) || cLvl < 1 || isNaN(dLvl) || dLvl < 1 || dLvl <= cLvl) {
-                    resultDiv.innerHTML = `<div class="p-4 border-l-4 border-[#ff4655] bg-red-900/20 text-white font-bold tracking-wide">Vui lòng nhập Level hợp lệ (Đích > Hiện tại).</div>`;
+                if (diff === 0) {
+                    resultDiv.innerHTML = `<div class="p-4 border-l-4 border-yellow-500 bg-yellow-900/20 text-white font-bold">Vui lòng chọn Rank đích khác Rank hiện tại.</div>`;
                     return;
                 }
-                operationType = `CÀY LEVEL: ${cLvl} <i class="fa-solid fa-arrow-right text-xs"></i> ${dLvl}`;
-                totalPrice = ((dLvl - cLvl) / BASE_LEVEL_RANGE) * BASE_LEVEL_1_TO_20_COST;
 
-            } 
+                displayOperation = `<span class="${getRankColorClass(currentRank)}">${currentRank}</span> <i class="fa-solid fa-angles-right mx-4 text-gray-500"></i> <span class="${getRankColorClass(desiredRank)}">${desiredRank}</span>`;
 
-            // Surcharges
-            let surchargedPrice = totalPrice;
-            if (isHellElo) surchargedPrice += totalPrice * 0.10;
-            if (isFastBoost) surchargedPrice += totalPrice * 0.20;
-            if (isSpecificAgent) surchargedPrice += totalPrice * 0.10;
-            
-            // Discount
-            let finalPrice;
-            if (discountCodeInput) {
-                if (discountCodes[discountCodeInput]) {
-                    discountRate = discountCodes[discountCodeInput];
-                    const discountAmount = surchargedPrice * discountRate;
-                    finalPrice = surchargedPrice - discountAmount;
-                    discountMessageText = `-${discountRate * 100}%`;
-                    discountCodeStatus.innerHTML = `<span class="text-[#0f9d58] tracking-widest"><i class="fa-solid fa-check"></i> ${discountMessageText}</span>`; 
+                if (operation === 'rank') {
+                    if (diff < 0) {
+                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Vui lòng chọn Derank nếu muốn hạ bậc.</div>`;
+                        return;
+                    }
+                    for (let i = cIdx; i < dIdx; i++) {
+                        const nextRank = rankOrder[i + 1];
+                        totalPrice += (pricesPerDivision[nextRank] || pricesPerDivision[getRankBaseName(nextRank)]);
+                    }
                 } else {
-                    finalPrice = surchargedPrice;
-                    discountCodeStatus.innerHTML = `<span class="text-[#ff4655] tracking-widest"><i class="fa-solid fa-xmark"></i> SAI MÃ</span>`;
+                    if (diff > 0) {
+                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Vui lòng chọn Cày Rank nếu muốn lên bậc.</div>`;
+                        return;
+                    }
+                    totalPrice = Math.abs(diff) * DERANK_PRICE_PER_DIVISION;
                 }
-            } else {
-                finalPrice = surchargedPrice;
-                discountMessageText = "";
+            } else if (operation === 'level') {
+                const cL = parseInt(document.getElementById('currentLevel').value);
+                const dL = parseInt(document.getElementById('desiredLevel').value);
+                if (dL <= cL) {
+                    resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Level đích phải lớn hơn hiện tại.</div>`;
+                    return;
+                }
+                displayOperation = `CÀY LEVEL: ${cL} <i class="fa-solid fa-arrow-right mx-2 opacity-50"></i> ${dL}`;
+                totalPrice = ((dL - cL) / BASE_LEVEL_RANGE) * BASE_LEVEL_1_TO_20_COST;
             }
 
-            // Splits
-            let adminSplitPercent = 0.10; 
-            let ctvSplitPercent = 0.90;   
-            
-            const adminPayout = finalPrice * adminSplitPercent;
-            const ctvPayout = finalPrice * ctvSplitPercent;
-            
-            // Render Result in Tech Box
-            if (totalPrice > 0) {
-                // Logic ẩn hiện phần chia tiền: Chỉ hiện khi KHÔNG PHẢI là derank
-                let staffInfoHTML = '';
-                if (operation !== 'derank') {
-                    staffInfoHTML = `
-                        <!-- Divider Tech Style -->
-                        <div class="flex items-center gap-2 my-6 opacity-30">
-                            <div class="h-[1px] w-full bg-white"></div>
-                            <div class="w-2 h-2 bg-white rotate-45"></div>
-                            <div class="h-[1px] w-full bg-white"></div>
-                        </div>
+            // Phụ phí
+            finalPrice = totalPrice;
+            if (operation === 'rank') {
+                if (isHellElo) finalPrice += totalPrice * 0.1;
+                if (isFastBoost) finalPrice += totalPrice * 0.2;
+                if (isSpecificAgent) finalPrice += totalPrice * 0.1;
+            }
 
-                        <!-- Staff Info (Stacked & Styled) -->
-                        <div class="space-y-3">
-                            <!-- CTV Row (Booster) - Clean Version -->
-                            <div class="bg-gradient-to-r from-gray-900 to-black p-4 flex justify-between items-center relative overflow-hidden group transition-colors border-t border-b border-white/5">
-                                <div class="absolute inset-0 bg-[#0f9d58]/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
-                                <div class="relative z-10">
-                                    <span class="text-lg text-gray-400 font-bold uppercase tracking-widest group-hover:text-white transition-colors">Booster</span>
-                                </div>
-                                <span class="relative z-10 text-white font-oswald font-bold text-3xl tracking-wide text-shadow-glow">${formatCurrency(ctvPayout)}<span class="text-lg text-gray-500 ml-1 font-sans">đ</span></span>
-                            </div>
-
-                            <!-- Admin Row - Clean Version -->
-                            <div class="bg-gradient-to-r from-gray-900 to-black p-4 flex justify-between items-center relative overflow-hidden group transition-colors border-b border-white/5">
-                                <div class="absolute inset-0 bg-amber-500/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
-                                <div class="relative z-10">
-                                    <span class="text-lg text-gray-400 font-bold uppercase tracking-widest group-hover:text-white transition-colors">Admin</span>
-                                </div>
-                                <span class="relative z-10 text-white font-oswald font-bold text-3xl tracking-wide">${formatCurrency(adminPayout)}<span class="text-lg text-gray-500 ml-1 font-sans">đ</span></span>
-                            </div>
-                        </div>
-                    `;
+            // Giảm giá
+            const status = document.getElementById('discountCodeStatus');
+            if (discountCodeInput && operation !== 'derank') {
+                if (discountCodes[discountCodeInput]) {
+                    const rate = discountCodes[discountCodeInput];
+                    finalPrice -= (finalPrice * rate);
+                    status.innerHTML = `<span class="text-green-500">-${rate*100}%</span>`;
+                } else {
+                    status.innerHTML = `<span class="text-red-500">SAI MÃ</span>`;
                 }
+            } else { status.innerHTML = ''; }
 
+            if (totalPrice > 0) {
                 resultDiv.innerHTML = `
-                    <div class="result-box-container p-6 relative group hover:bg-[#1a232b] transition-colors">
-                        <div class="absolute top-0 right-0 p-2 opacity-20">
-                            <i class="fa-solid fa-crosshairs text-6xl text-white"></i>
-                        </div>
-
-                        <div class="flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
-                            <div class="w-full md:w-auto">
-                                <div class="text-3xl text-white tracking-wide font-medium font-oswald">
-                                    ${operationType}
-                                </div>
+                    <div class="result-box-container p-8">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                            <div class="text-2xl md:text-3xl font-oswald uppercase tracking-wider text-center md:text-left">
+                                ${displayOperation}
                             </div>
-                            
-                            <div class="text-right w-full md:w-auto">
-                                ${discountMessageText ? `<p class="text-lg text-gray-500 line-through mb-0 font-mono">${formatCurrency(surchargedPrice)}</p>` : ''}
+                            <div class="text-center md:text-right">
+                                <p class="text-gray-500 uppercase font-bold text-sm tracking-widest mb-1">Tổng chi phí dự kiến</p>
                                 <div class="text-6xl font-oswald font-bold text-white leading-none">
                                     ${formatCurrency(finalPrice)}<span class="text-2xl text-[#ff4655] align-top ml-1">đ</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        ${staffInfoHTML}
                     </div>
                 `;
             } else {
-                 resultDiv.innerHTML = '<div class="h-full flex flex-col items-center justify-center text-gray-600 italic text-lg py-8 border border-white/5 border-dashed"><i class="fa-solid fa-gamepad text-3xl mb-2 opacity-50"></i>Waiting for configuration...</div>';
+                resultDiv.innerHTML = '<div class="h-full flex items-center justify-center text-gray-600 italic py-8">Waiting for configuration...</div>';
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             populateRankDropdowns();
             toggleOperationFields();
-            
-            ['currentRank', 'desiredRank'].forEach(id => 
-                document.getElementById(id).addEventListener('change', calculatePrice)
-            );
-            ['currentLevel', 'desiredLevel'].forEach(id => 
-                document.getElementById(id).addEventListener('input', calculatePrice)
-            );
+            ['currentRank', 'desiredRank', 'currentLevel', 'desiredLevel'].forEach(id => {
+                document.getElementById(id).addEventListener('change', calculatePrice);
+                document.getElementById(id).addEventListener('input', calculatePrice);
+            });
         });
     </script>
 </body>
