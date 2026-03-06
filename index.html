@@ -291,7 +291,6 @@
         const pricesPerDivision = {
             "Iron": 25000, "Bronze": 30000, "Silver": 40000, "Gold": 55000,
             "Platinum": 80000, "Diamond": 130000, "Ascendant": 180000,
-            // Xóa giá trị cố định của Immortal vì sẽ hiển thị Inbox
             "Immortal 1": 0, "Immortal 2": 0, "Immortal 3": 0 
         };
 
@@ -359,9 +358,9 @@
                     return;
                 }
 
-                displayOperation = `<span class="${getRankColorClass(currentRank)}">${currentRank}</span> <i class="fa-solid fa-angles-right mx-4 text-gray-500"></i> <span class="${getRankColorClass(desiredRank)}">${desiredRank}</span>`;
+                // Cập nhật displayOperation để các nhãn rank và icon luôn nằm trên cùng 1 hàng
+                displayOperation = `<div class="inline-flex items-center whitespace-nowrap"><span class="${getRankColorClass(currentRank)}">${currentRank}</span> <i class="fa-solid fa-angles-right mx-3 md:mx-4 text-gray-500 text-sm md:text-xl"></i> <span class="${getRankColorClass(desiredRank)}">${desiredRank}</span></div>`;
 
-                // Kiểm tra nếu rank đích là Immortal
                 if (desiredRank.includes("Immortal")) {
                     isImmortalRank = true;
                 }
@@ -389,11 +388,10 @@
                     resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Level đích phải lớn hơn hiện tại.</div>`;
                     return;
                 }
-                displayOperation = `CÀY LEVEL: ${cL} <i class="fa-solid fa-arrow-right mx-2 opacity-50"></i> ${dL}`;
+                displayOperation = `<div class="inline-flex items-center whitespace-nowrap">CÀY LEVEL: ${cL} <i class="fa-solid fa-arrow-right mx-2 opacity-50"></i> ${dL}</div>`;
                 totalPrice = ((dL - cL) / BASE_LEVEL_RANGE) * BASE_LEVEL_1_TO_20_COST;
             }
 
-            // Phụ phí
             finalPrice = totalPrice;
             if (operation === 'rank') {
                 if (isHellElo) finalPrice += totalPrice * 0.1;
@@ -401,7 +399,6 @@
                 if (isSpecificAgent) finalPrice += totalPrice * 0.1;
             }
 
-            // Giảm giá
             const status = document.getElementById('discountCodeStatus');
             if (discountCodeInput && operation !== 'derank') {
                 if (discountCodes[discountCodeInput]) {
@@ -435,7 +432,7 @@
                 resultDiv.innerHTML = `
                     <div class="result-box-container p-8">
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
-                            <div class="text-2xl md:text-3xl font-oswald uppercase tracking-wider text-center md:text-left">
+                            <div class="text-2xl md:text-3xl font-oswald uppercase tracking-wider text-center md:text-left overflow-x-auto max-w-full">
                                 ${displayOperation}
                             </div>
                             <div class="text-center md:text-right">
@@ -443,7 +440,6 @@
                             </div>
                         </div>
 
-                        <!-- Nút Thuê Ngay -->
                         <a href="https://www.facebook.com/jirovlr" target="_blank" 
                            class="block w-full py-4 bg-[#ff4655] hover:bg-[#ff5d6a] text-white text-center font-bold text-2xl uppercase tracking-widest transition-all transform hover:scale-[1.01] active:scale-95 relative overflow-hidden group">
                             <span class="relative z-10 flex items-center justify-center gap-3">
@@ -470,5 +466,3 @@
     </script>
 </body>
 </html>
-
-
