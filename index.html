@@ -326,6 +326,24 @@
 
         function toggleOperationFields() {
             const operation = document.querySelector('input[name="operationType"]:checked').value;
+            const cRank = document.getElementById('currentRank');
+            const dRank = document.getElementById('desiredRank');
+
+            // Tự động điều chỉnh rank mong muốn nếu chuyển sang Derank để tránh lỗi ngay lập tức
+            if (operation === 'derank') {
+                const cIdx = rankOrder.indexOf(cRank.value);
+                const dIdx = rankOrder.indexOf(dRank.value);
+                if (dIdx >= cIdx && cIdx > 0) {
+                    dRank.value = rankOrder[cIdx - 1];
+                }
+            } else if (operation === 'rank') {
+                const cIdx = rankOrder.indexOf(cRank.value);
+                const dIdx = rankOrder.indexOf(dRank.value);
+                if (dIdx <= cIdx && cIdx < rankOrder.length - 1) {
+                    dRank.value = rankOrder[cIdx + 1];
+                }
+            }
+
             document.getElementById('rankFields').classList.toggle('hidden', operation !== 'rank' && operation !== 'derank');
             document.getElementById('levelFields').classList.toggle('hidden', operation !== 'level');
             document.getElementById('discountCodeContainer').classList.toggle('hidden', operation === 'derank');
@@ -345,6 +363,7 @@
             let displayOperation = "";
             let finalPrice = 0;
             let isImmortalRank = false;
+            let errorMessage = "";
 
             if (operation === 'rank' || operation === 'derank') {
                 const currentRank = document.getElementById('currentRank').value;
@@ -353,43 +372,50 @@
                 const dIdx = rankOrder.indexOf(desiredRank);
                 const diff = dIdx - cIdx;
 
-                if (diff === 0) {
-                    resultDiv.innerHTML = `<div class="p-4 border-l-4 border-yellow-500 bg-yellow-900/20 text-white font-bold">Vui lòng chọn Rank đích khác Rank hiện tại.</div>`;
-                    return;
-                }
-
-                // Cập nhật displayOperation để các nhãn rank và icon luôn nằm trên cùng 1 hàng
                 displayOperation = `<div class="inline-flex items-center whitespace-nowrap"><span class="${getRankColorClass(currentRank)}">${currentRank}</span> <i class="fa-solid fa-angles-right mx-3 md:mx-4 text-gray-500 text-sm md:text-xl"></i> <span class="${getRankColorClass(desiredRank)}">${desiredRank}</span></div>`;
 
-                if (desiredRank.includes("Immortal")) {
-                    isImmortalRank = true;
+                if (diff === 0) {
+                    errorMessage = "Vui lòng chọn Rank đích khác Rank hiện tại.";
+                } else if (operation === 'rank' && diff < 0) {
+                    errorMessage = "Vui lòng chọn Derank nếu muốn hạ bậc.";
+                } else if (operation === 'derank' && diff > 0) {
+                    errorMessage = "Vui lòng chọn Cày Rank nếu muốn lên bậc.";
                 }
 
-                if (operation === 'rank') {
-                    if (diff < 0) {
-                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Vui lòng chọn Derank nếu muốn hạ bậc.</div>`;
-                        return;
+                if (!errorMessage) {
+                    if (desiredRank.includes("Immortal")) isImmortalRank = true;
+
+                    if (operation === 'rank') {
+                        for (let i = cIdx; i < dIdx; i++) {
+                            const nextRank = rankOrder[i + 1];
+                            totalPrice += (pricesPerDivision[nextRank] || pricesPerDivision[getRankBaseName(nextRank)]);
+                        }
+                    } else {
+                        totalPrice = Math.abs(diff) * DERANK_PRICE_PER_DIVISION;
                     }
-                    for (let i = cIdx; i < dIdx; i++) {
-                        const nextRank = rankOrder[i + 1];
-                        totalPrice += (pricesPerDivision[nextRank] || pricesPerDivision[getRankBaseName(nextRank)]);
-                    }
-                } else {
-                    if (diff > 0) {
-                        resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Vui lòng chọn Cày Rank nếu muốn lên bậc.</div>`;
-                        return;
-                    }
-                    totalPrice = Math.abs(diff) * DERANK_PRICE_PER_DIVISION;
                 }
             } else if (operation === 'level') {
                 const cL = parseInt(document.getElementById('currentLevel').value);
                 const dL = parseInt(document.getElementById('desiredLevel').value);
                 if (dL <= cL) {
-                    resultDiv.innerHTML = `<div class="p-4 border-l-4 border-red-500 bg-red-900/20 text-white font-bold">Level đích phải lớn hơn hiện tại.</div>`;
-                    return;
+                    errorMessage = "Level đích phải lớn hơn hiện tại.";
+                } else {
+                    displayOperation = `<div class="inline-flex items-center whitespace-nowrap">CÀY LEVEL: ${cL} <i class="fa-solid fa-arrow-right mx-2 opacity-50"></i> ${dL}</div>`;
+                    totalPrice = ((dL - cL) / BASE_LEVEL_RANGE) * BASE_LEVEL_1_TO_20_COST;
                 }
-                displayOperation = `<div class="inline-flex items-center whitespace-nowrap">CÀY LEVEL: ${cL} <i class="fa-solid fa-arrow-right mx-2 opacity-50"></i> ${dL}</div>`;
-                totalPrice = ((dL - cL) / BASE_LEVEL_RANGE) * BASE_LEVEL_1_TO_20_COST;
+            }
+
+            // Nếu có lỗi, hiển thị khung thông báo trong style chuẩn
+            if (errorMessage) {
+                resultDiv.innerHTML = `
+                    <div class="result-box-container p-6 border-yellow-500 bg-yellow-900/10">
+                         <div class="flex items-center gap-3 text-yellow-500 font-bold uppercase tracking-wider">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Hệ thống: ${errorMessage}</span>
+                         </div>
+                    </div>
+                `;
+                return;
             }
 
             finalPrice = totalPrice;
@@ -410,49 +436,42 @@
                 }
             } else { status.innerHTML = ''; }
 
-            if (totalPrice > 0 || isImmortalRank) {
-                let priceDisplay = "";
-                
-                if (isImmortalRank && operation === 'rank') {
-                    priceDisplay = `
-                        <p class="text-[#ff4655] uppercase font-bold text-sm tracking-widest mb-1">CẦN THỎA THUẬN RR</p>
-                        <div class="text-3xl md:text-4xl font-oswald font-bold text-white leading-none mt-2">
-                            INBOX
-                        </div>
-                    `;
-                } else {
-                    priceDisplay = `
-                        <p class="text-gray-500 uppercase font-bold text-sm tracking-widest mb-1">Tổng chi phí dự kiến</p>
-                        <div class="text-6xl font-oswald font-bold text-white leading-none">
-                            ${formatCurrency(finalPrice)}<span class="text-2xl text-[#ff4655] align-top ml-1">đ</span>
-                        </div>
-                    `;
-                }
-
-                resultDiv.innerHTML = `
-                    <div class="result-box-container p-8">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
-                            <div class="text-2xl md:text-3xl font-oswald uppercase tracking-wider text-center md:text-left overflow-x-auto max-w-full">
-                                ${displayOperation}
-                            </div>
-                            <div class="text-center md:text-right">
-                                ${priceDisplay}
-                            </div>
-                        </div>
-
-                        <a href="https://www.facebook.com/jirovlr" target="_blank" 
-                           class="block w-full py-4 bg-[#ff4655] hover:bg-[#ff5d6a] text-white text-center font-bold text-2xl uppercase tracking-widest transition-all transform hover:scale-[1.01] active:scale-95 relative overflow-hidden group">
-                            <span class="relative z-10 flex items-center justify-center gap-3">
-                                 THUÊ NGAY 
-                            </span>
-                            <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
-                        </a>
-                        <p class="text-center text-gray-500 text-xs mt-3 uppercase tracking-widest opacity-50 italic">* Nhấn thuê ngay để trao đổi trực tiếp qua Facebook</p>
-                    </div>
+            let priceDisplay = "";
+            if (isImmortalRank && operation === 'rank') {
+                priceDisplay = `
+                    <p class="text-[#ff4655] uppercase font-bold text-sm tracking-widest mb-1">CẦN THỎA THUẬN RR</p>
+                    <div class="text-3xl md:text-4xl font-oswald font-bold text-white leading-none mt-2">INBOX</div>
                 `;
             } else {
-                resultDiv.innerHTML = '<div class="h-full flex items-center justify-center text-gray-600 italic py-8">Waiting for configuration...</div>';
+                priceDisplay = `
+                    <p class="text-gray-500 uppercase font-bold text-sm tracking-widest mb-1">Tổng chi phí dự kiến</p>
+                    <div class="text-6xl font-oswald font-bold text-white leading-none">
+                        ${formatCurrency(finalPrice)}<span class="text-2xl text-[#ff4655] align-top ml-1">đ</span>
+                    </div>
+                `;
             }
+
+            resultDiv.innerHTML = `
+                <div class="result-box-container p-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                        <div class="text-2xl md:text-3xl font-oswald uppercase tracking-wider text-center md:text-left">
+                            ${displayOperation}
+                        </div>
+                        <div class="text-center md:text-right">
+                            ${priceDisplay}
+                        </div>
+                    </div>
+
+                    <a href="https://www.facebook.com/jirovlr" target="_blank" 
+                       class="block w-full py-4 bg-[#ff4655] hover:bg-[#ff5d6a] text-white text-center font-bold text-2xl uppercase tracking-widest transition-all transform hover:scale-[1.01] active:scale-95 relative overflow-hidden group">
+                        <span class="relative z-10 flex items-center justify-center gap-3">
+                             THUÊ NGAY 
+                        </span>
+                        <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+                    </a>
+                    <p class="text-center text-gray-500 text-xs mt-3 uppercase tracking-widest opacity-50 italic">* Nhấn thuê ngay để trao đổi trực tiếp qua Facebook</p>
+                </div>
+            `;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
