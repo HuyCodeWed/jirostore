@@ -291,7 +291,7 @@
         const pricesPerDivision = {
             "Iron": 25000, "Bronze": 30000, "Silver": 40000, "Gold": 55000,
             "Platinum": 80000, "Diamond": 130000, "Ascendant": 180000,
-            "Immortal 1": 0, "Immortal 2": 0, "Immortal 3": 0 
+            "Immortal 1": 260000, "Immortal 2": 0, "Immortal 3": 0 
         };
 
         const DERANK_PRICE_PER_DIVISION = 25000;
@@ -383,7 +383,8 @@
                 }
 
                 if (!errorMessage) {
-                    if (desiredRank.includes("Immortal")) isImmortalRank = true;
+                    // Cập nhật điều kiện: Chỉ cần INBOX với Immortal 2 và Immortal 3
+                    if (desiredRank === "Immortal 2" || desiredRank === "Immortal 3") isImmortalRank = true;
 
                     if (operation === 'rank') {
                         for (let i = cIdx; i < dIdx; i++) {
